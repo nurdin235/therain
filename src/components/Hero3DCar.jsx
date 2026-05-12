@@ -10,30 +10,35 @@ import {
 import * as THREE from "three";
 
 const START = {
-  position: new THREE.Vector3(7.5, 0, 1.2),
+  position: new THREE.Vector3(7.8, 0, 1.35),
   rotationY: -0.7,
   scale: 0.94,
 };
 
 const FINISH = {
-  position: new THREE.Vector3(1.25, 0, 0.15),
+  position: new THREE.Vector3(1.25, 0, 0.12),
   rotationY: 0.35,
   scale: 1,
 };
 
-const DRIVE_CURVE = new THREE.CatmullRomCurve3([
-  new THREE.Vector3(7.5, 0, 1.2),
-  new THREE.Vector3(4.0, 0, 0.2),
-  new THREE.Vector3(1.2, 0, -0.9),
-  new THREE.Vector3(-0.8, 0, -1.2),
-  new THREE.Vector3(0.2, 0, -0.45),
-  new THREE.Vector3(1.25, 0, 0.15),
-]);
+const DRIVE_CURVE = new THREE.CatmullRomCurve3(
+  [
+    new THREE.Vector3(7.8, 0, 1.35),
+    new THREE.Vector3(5.2, 0, 1.05),
+    new THREE.Vector3(2.8, 0, 0.35),
+    new THREE.Vector3(0.4, 0, -0.55),
+    new THREE.Vector3(-1.15, 0, -0.85),
+    new THREE.Vector3(-0.35, 0, -0.45),
+    new THREE.Vector3(1.25, 0, 0.12),
+  ],
+  false,
+  "centripetal",
+  0.35
+);
 
-const DRIVE_DURATION = 2.25;
-const MODEL_YAW_OFFSET = 1.15;
+const DRIVE_DURATION = 2.6;
 
-const CAMERA_START = new THREE.Vector3(0.45, 1.7, 7.2);
+const CAMERA_START = new THREE.Vector3(0.55, 1.7, 7.4);
 const CAMERA_FINISH = new THREE.Vector3(0, 1.55, 6.45);
 const LOOK_START = new THREE.Vector3(1.7, 0.46, 0);
 const LOOK_FINISH = new THREE.Vector3(0.6, 0.55, 0);
@@ -42,9 +47,23 @@ const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
 const easeInOutCubic = (value) =>
   value < 0.5 ? 4 * value * value * value : 1 - Math.pow(-2 * value + 2, 3) / 2;
 
+function clamp01(value) {
+  return Math.min(Math.max(value, 0), 1);
+}
+
+function smootherstep(value) {
+  const t = clamp01(value);
+  return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
 function lerpAngle(from, to, alpha) {
   const delta = Math.atan2(Math.sin(to - from), Math.cos(to - from));
   return from + delta * alpha;
+}
+
+function dampAngle(current, target, lambda, delta) {
+  const alpha = 1 - Math.exp(-lambda * delta);
+  return lerpAngle(current, target, alpha);
 }
 
 function getAxisFromBox(object) {
@@ -197,50 +216,42 @@ function CarModel({ modelPath, playKey, studio }) {
 
     timelineRef.current += delta;
     const time = timelineRef.current;
-    const driveProgress = THREE.MathUtils.clamp((time - 0.1) / DRIVE_DURATION, 0, 1);
-    const easedDrive = easeOutCubic(driveProgress);
-    const slowProgress = THREE.MathUtils.clamp((time - 1.1) / 1.25, 0, 1);
-    const wheelFactor = THREE.MathUtils.lerp(1, 0, easeOutCubic(slowProgress));
-    const settleProgress = THREE.MathUtils.clamp((time - 2.0) / 0.35, 0, 1);
-    const steeringCorrection = Math.sin(driveProgress * Math.PI) * (studio.steering ?? 0.035);
+    const rawProgress = clamp01((time - 0.1) / DRIVE_DURATION);
+    const easedProgress = smootherstep(rawProgress);
+    const wheelFactor = 1 - smootherstep((rawProgress - 0.76) / 0.24);
 
     const car = carRef.current;
-    const curvePoint = DRIVE_CURVE.getPoint(easedDrive);
-    const tangent = DRIVE_CURVE.getTangent(easedDrive);
-    const pathYaw = Math.atan2(tangent.x, tangent.z) + MODEL_YAW_OFFSET;
-    const finalBlend = THREE.MathUtils.smoothstep(driveProgress, 0.82, 1);
-    const targetYaw = lerpAngle(pathYaw - steeringCorrection, FINISH.rotationY, finalBlend);
+    const curvePoint = DRIVE_CURVE.getPoint(easedProgress);
+    const lookAheadProgress = Math.min(easedProgress + 0.025, 1);
+    const lookAheadPoint = DRIVE_CURVE.getPoint(lookAheadProgress);
+    const direction = lookAheadPoint.clone().sub(curvePoint).normalize();
+    const pathYaw = Math.atan2(direction.x, direction.z);
+    const finalBlend = smootherstep((rawProgress - 0.65) / 0.35);
+    const steeringCorrection = Math.sin(rawProgress * Math.PI) * (studio.steering ?? 0.025) * (1 - finalBlend);
+    const desiredYaw = lerpAngle(pathYaw - steeringCorrection, FINISH.rotationY, finalBlend);
 
     car.position.copy(curvePoint);
-    yawRef.current = lerpAngle(yawRef.current, targetYaw, 1 - Math.pow(0.0009, delta));
+    car.position.y = 0;
+    yawRef.current = dampAngle(yawRef.current, desiredYaw, 6.5, delta);
     car.rotation.y = yawRef.current;
-    car.scale.setScalar(THREE.MathUtils.lerp(START.scale, FINISH.scale, easedDrive));
+    car.scale.setScalar(THREE.MathUtils.lerp(START.scale, FINISH.scale, easedProgress));
 
     const frameTravel = car.position.distanceTo(previousCarPositionRef.current);
     previousCarPositionRef.current.copy(car.position);
 
-    if (time >= 2.0 && time <= 2.35) {
+    if (rawProgress > 0.9) {
       const weight = studio.settle ?? 1;
-      const yBounce = settleProgress < 0.42
-        ? THREE.MathUtils.lerp(0, 0.04, easeOutCubic(settleProgress / 0.42))
-        : settleProgress < 0.72
-          ? THREE.MathUtils.lerp(0.04, -0.02, easeOutCubic((settleProgress - 0.42) / 0.3))
-          : THREE.MathUtils.lerp(-0.02, 0, easeOutCubic((settleProgress - 0.72) / 0.28));
-      const pitch = settleProgress < 0.42
-        ? THREE.MathUtils.lerp(0, 0.02, easeOutCubic(settleProgress / 0.42))
-        : settleProgress < 0.72
-          ? THREE.MathUtils.lerp(0.02, -0.01, easeOutCubic((settleProgress - 0.42) / 0.3))
-          : THREE.MathUtils.lerp(-0.01, 0, easeOutCubic((settleProgress - 0.72) / 0.28));
-      car.position.y = FINISH.position.y + yBounce * weight;
+      const settleTime = (rawProgress - 0.9) * 10;
+      const bounce = Math.sin(settleTime * 14) * 0.035 * Math.exp(-settleTime * 5);
+      const pitch = Math.sin(settleTime * 12) * 0.018 * Math.exp(-settleTime * 5);
+      car.position.y = FINISH.position.y + bounce * weight;
       car.rotation.x = pitch * weight;
-    } else if (time > 2.35) {
+    } else {
       car.position.y = FINISH.position.y;
       car.rotation.x = 0;
-      car.rotation.y = FINISH.rotationY;
-      yawRef.current = FINISH.rotationY;
     }
 
-    if (driveProgress < 1 && wheelPivotsRef.current.length > 0) {
+    if (rawProgress < 1 && wheelPivotsRef.current.length > 0) {
       const wheelSpeed = frameTravel * 7.2 * (studio.wheelBoost ?? 1) * wheelFactor;
       wheelPivotsRef.current.forEach(({ pivot, axis }) => {
         pivot.rotation[axis] -= wheelSpeed;
@@ -253,13 +264,13 @@ function CarModel({ modelPath, playKey, studio }) {
       shadowRef.current.material.opacity = THREE.MathUtils.lerp(
         0.16,
         studio.shadowOpacity ?? 0.48,
-        easeInOutCubic(driveProgress)
+        easeInOutCubic(easedProgress)
       );
-      const shadowScale = THREE.MathUtils.lerp(0.78, 1, easeOutCubic(driveProgress));
+      const shadowScale = THREE.MathUtils.lerp(0.78, 1, easeOutCubic(easedProgress));
       shadowRef.current.scale.set(2.55 * shadowScale, 0.82 * shadowScale, 1);
     }
 
-    const cameraProgress = easeOutCubic(THREE.MathUtils.clamp(time / 2.35, 0, 1));
+    const cameraProgress = smootherstep(clamp01(time / 2.75));
     const desiredCamera = CAMERA_START.clone().lerp(CAMERA_FINISH, cameraProgress);
     const carFollow = new THREE.Vector3(car.position.x * 0.12, 0, car.position.z * 0.18);
     const desiredLook = LOOK_START.clone().lerp(LOOK_FINISH, cameraProgress).add(carFollow.multiplyScalar(1 - cameraProgress));

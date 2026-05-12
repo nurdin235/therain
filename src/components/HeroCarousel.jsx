@@ -16,7 +16,7 @@ const titleAnim = {
     x: 0,
       filter: "blur(0px)",
       transition: {
-      delay: 2.2,
+      delay: 2.75,
       duration: 0.75,
       ease: [0.22, 1, 0.36, 1],
     },
@@ -34,7 +34,7 @@ const subtitleAnim = {
     y: 0,
       scale: 1,
       transition: {
-      delay: 2.4,
+      delay: 2.95,
       duration: 0.55,
       ease: [0.22, 1, 0.36, 1],
     },
@@ -52,7 +52,7 @@ const itemAnim = {
     y: 0,
     scale: 1,
     transition: {
-      delay: 2.6 + index * 0.13,
+      delay: 3.15 + index * 0.13,
       duration: 0.55,
       ease: [0.22, 1, 0.36, 1],
     },
@@ -70,7 +70,7 @@ const buttonAnim = {
     y: 0,
     scale: 1,
     transition: {
-      delay: 3.0 + index * 0.08,
+      delay: 3.45 + index * 0.08,
       duration: 0.5,
       ease: [0.22, 1, 0.36, 1],
     },

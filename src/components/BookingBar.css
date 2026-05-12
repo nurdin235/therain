@@ -1,10 +1,10 @@
 .booking-bar-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: -0.4rem;
   left: 0;
   width: 100%;
   z-index: 50;
-  padding: 0 4rem 3rem 4rem;
+  padding: 0 4rem 2.2rem 4rem;
 }
 
 .booking-bar {
@@ -16,8 +16,8 @@
   background: rgba(15, 15, 15, 0.7);
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2rem 3rem;
-  border-radius: 24px;
+  padding: 1.55rem 2.1rem;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,8 +58,9 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.2rem 2.5rem;
-  border-radius: 16px;
+  min-width: 168px;
+  padding: 1.05rem 1.6rem;
+  border-radius: 8px;
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 10px 30px rgba(239, 16, 24, 0.3);
   margin-left: 2rem;
@@ -74,8 +75,7 @@
 @media (max-width: 1200px) {
   .booking-bar-wrapper {
     padding: 0 2rem 2rem 2rem;
-    position: relative;
-    margin-top: -5rem;
+    bottom: -0.5rem;
   }
   .booking-bar__container {
     flex-wrap: wrap;
@@ -95,7 +95,26 @@
   }
 }
 @media (max-width: 768px) {
-    .booking-bar-wrapper {
-        display: none;
-    }
+  .booking-bar-wrapper {
+    position: absolute;
+    padding: 0 1.25rem 1rem;
+  }
+
+  .booking-bar__container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.1rem;
+  }
+
+  .booking-field {
+    min-width: 0;
+    gap: 1rem;
+  }
+
+  .btn-search-premium {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
 }

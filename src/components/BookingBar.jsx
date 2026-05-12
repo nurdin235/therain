@@ -18,7 +18,7 @@ const BookingBar = () => {
               <MapPin size={22} />
             </div>
             <div className="field-content">
-              <label>Location</label>
+              <label>Pick-up Location</label>
               <div className="flex items-center gap-1">
                 <input type="text" placeholder="Dubai, UAE" className="bg-transparent border-none outline-none text-white font-bold w-full" />
                 <ChevronDown size={14} className="text-white/40" />
@@ -63,12 +63,12 @@ const BookingBar = () => {
               <Car size={22} />
             </div>
             <div className="field-content">
-              <label>Car Category</label>
+              <label>Car Brand</label>
               <div className="flex items-center gap-1">
                 <select className="bg-transparent border-none outline-none text-white font-bold w-full appearance-none cursor-pointer">
-                  <option className="bg-[#111]">Sport Cars</option>
-                  <option className="bg-[#111]">Luxury Sedan</option>
-                  <option className="bg-[#111]">Premium SUV</option>
+                  <option className="bg-[#111]">Audi</option>
+                  <option className="bg-[#111]">BMW</option>
+                  <option className="bg-[#111]">Mercedes</option>
                 </select>
                 <ChevronDown size={14} className="text-white/40" />
               </div>
@@ -77,7 +77,7 @@ const BookingBar = () => {
 
           <button className="btn-search-premium">
             <Search size={22} />
-            <span className="font-black tracking-widest uppercase text-xs">Search</span>
+            <span className="font-black tracking-widest uppercase text-xs">Find a Car</span>
           </button>
         </div>
       </div>

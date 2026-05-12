@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Menu, X, Search, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Navbar.css';
 
@@ -16,9 +16,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Rent', href: '#rent' },
-    { name: 'Share', href: '#share' },
-    { name: 'About Us', href: '#about' },
+    { name: 'Home', href: '#rent', active: true },
+    { name: 'Car Fleet', href: '#fleet' },
+    { name: 'Services', href: '#services' },
+    { name: 'Locations', href: '#locations' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -32,7 +33,7 @@ const Navbar = () => {
           className="navbar__logo"
         >
           <span className="logo-card">CARD</span>
-          <span className="logo-zilla text-red-600">ZILLA</span>
+          <span className="logo-zilla">ZILLA</span>
         </motion.div>
 
         {/* Navigation Links */}
@@ -42,7 +43,7 @@ const Navbar = () => {
               <li key={index}>
                 <a 
                   href={link.href} 
-                  className="navbar__link"
+                  className={`navbar__link ${link.active ? 'navbar__link--active' : ''}`}
                 >
                   {link.name}
                 </a>
@@ -53,21 +54,11 @@ const Navbar = () => {
 
         {/* Action Buttons */}
         <div className="navbar__actions flex items-center gap-6">
-          <button className="text-white hover:text-red-500 transition-colors hidden md:block" aria-label="Search cars">
-            <Search size={20} />
+          <button className="btn-login">
+            Login
           </button>
           
-          <div className="flex items-center gap-2 text-white cursor-pointer hover:text-red-500 transition-colors hidden md:flex">
-            <Globe size={18} />
-            <span className="text-xs font-bold">EN</span>
-          </div>
-
-          <button className="btn-login flex items-center gap-2 bg-white/5 hover:bg-white/10 px-5 py-2 rounded-full border border-white/10 transition-all">
-            <User size={18} className="text-red-500" />
-            <span className="text-sm font-bold text-white uppercase tracking-wider">Login</span>
-          </button>
-          
-          <button className="btn-book bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-bold text-sm tracking-widest transition-all hover:scale-105 shadow-lg shadow-red-600/20">
+          <button className="btn-book">
             BOOK NOW
           </button>
         </div>
@@ -88,7 +79,7 @@ const Navbar = () => {
         <ul className="flex flex-col items-center gap-8 pt-20">
           {navLinks.map((link, index) => (
             <li key={index}>
-              <a href={link.href} className="text-2xl font-black uppercase text-white hover:text-red-600" onClick={() => setMenuOpen(false)}>{link.name}</a>
+              <a href={link.href} className={link.active ? 'navbar__mobile-link navbar__mobile-link--active' : 'navbar__mobile-link'} onClick={() => setMenuOpen(false)}>{link.name}</a>
             </li>
           ))}
           <li className="flex flex-col gap-4 w-full px-10">

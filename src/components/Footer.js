@@ -2,10 +2,30 @@ import React from 'react';
 import './Footer.css';
 
 const footerGroups = [
-  ['Product', ['Rider App', 'Driver App', 'Admin Dashboard', 'Safety Center']],
-  ['Drivers', ['Apply to Drive', 'Verification', 'Earnings', 'Driver Support']],
-  ['Company', ['About TheRain', 'Bamenda Launch', 'Future Vision', 'Careers']],
-  ['Legal', ['Privacy', 'Terms', 'Safety Policy', 'Payments']],
+  ['Product', [
+    ['Rider App', '#/'],
+    ['Driver App', '#/'],
+    ['Safety Center', '#/safety-policy'],
+    ['Contact Support', '#/contact'],
+  ]],
+  ['Drivers', [
+    ['Apply to Drive', '#/contact'],
+    ['Verification', '#/safety-policy'],
+    ['Earnings', '#/'],
+    ['Driver Support', '#/contact'],
+  ]],
+  ['Company', [
+    ['About TheRain', '#/about'],
+    ['Bamenda Launch', '#/about'],
+    ['Future Vision', '#/about'],
+    ['Contact', '#/contact'],
+  ]],
+  ['Legal', [
+    ['Privacy', '#/privacy'],
+    ['Terms', '#/terms'],
+    ['Safety Policy', '#/safety-policy'],
+    ['Payments', '#/terms'],
+  ]],
 ];
 
 const Footer = () => {
@@ -32,8 +52,8 @@ const Footer = () => {
             <div className="footer__links" key={title}>
               <h4>{title}</h4>
               <ul>
-                {links.map((link) => (
-                  <li key={link}><a href="#rent">{link}</a></li>
+                {links.map(([label, href]) => (
+                  <li key={label}><a href={href}>{label}</a></li>
                 ))}
               </ul>
             </div>

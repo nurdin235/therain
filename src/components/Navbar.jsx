@@ -6,21 +6,26 @@ import './Navbar.css';
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [route, setRoute] = useState(window.location.hash || '#/');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+    const handleHash = () => setRoute(window.location.hash || '#/');
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('hashchange', handleHash);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', handleHash);
+    };
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#rent', active: true },
-    { name: 'Riders', href: '#riders' },
-    { name: 'Drivers', href: '#drivers' },
-    { name: 'Safety', href: '#safety' },
-    { name: 'Download', href: '#download' },
+    { name: 'Home', href: '#/' },
+    { name: 'About', href: '#/about' },
+    { name: 'Safety', href: '#/safety-policy' },
+    { name: 'Contact', href: '#/contact' },
   ];
 
   return (
@@ -43,9 +48,9 @@ const Navbar = () => {
               <li key={index}>
                 <a 
                   href={link.href} 
-                  className={`navbar__link ${link.active ? 'navbar__link--active' : ''}`}
+                  className={`navbar__link ${route === link.href ? 'navbar__link--active' : ''}`}
                 >
-                  {link.name}
+            {link.name}
                 </a>
               </li>
             ))}
@@ -79,7 +84,7 @@ const Navbar = () => {
         <ul className="flex flex-col items-center gap-8 pt-20">
           {navLinks.map((link, index) => (
             <li key={index}>
-              <a href={link.href} className={link.active ? 'navbar__mobile-link navbar__mobile-link--active' : 'navbar__mobile-link'} onClick={() => setMenuOpen(false)}>{link.name}</a>
+              <a href={link.href} className={route === link.href ? 'navbar__mobile-link navbar__mobile-link--active' : 'navbar__mobile-link'} onClick={() => setMenuOpen(false)}>{link.name}</a>
             </li>
           ))}
           <li className="flex flex-col gap-4 w-full px-10">

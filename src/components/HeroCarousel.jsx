@@ -162,11 +162,11 @@ export default function HeroCarousel() {
 
             <div className="hero-carousel__actions">
               <motion.button custom={0} variants={buttonAnim} className="hero-carousel__button hero-carousel__button--primary">
-                Rent Now
+                Book a Ride
               </motion.button>
 
               <motion.button custom={1} variants={buttonAnim} className="hero-carousel__button hero-carousel__button--glass">
-                View Details
+                Become a Driver
               </motion.button>
             </div>
           </motion.div>
@@ -179,7 +179,7 @@ export default function HeroCarousel() {
             key={car.id}
             onClick={() => handleDotClick(index)}
             className={`hero-carousel__dot ${index === activeIndex ? "hero-carousel__dot--active" : ""}`}
-            aria-label={`Show ${car.name}`}
+            aria-label={`Show ${car.category} story`}
           />
         ))}
       </div>

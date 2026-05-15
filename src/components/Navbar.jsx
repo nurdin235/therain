@@ -17,10 +17,10 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '#rent', active: true },
-    { name: 'Car Fleet', href: '#fleet' },
-    { name: 'Services', href: '#services' },
-    { name: 'Locations', href: '#locations' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Riders', href: '#riders' },
+    { name: 'Drivers', href: '#drivers' },
+    { name: 'Safety', href: '#safety' },
+    { name: 'Download', href: '#download' },
   ];
 
   return (
@@ -32,8 +32,8 @@ const Navbar = () => {
           animate={{ opacity: 1, x: 0 }}
           className="navbar__logo"
         >
-          <span className="logo-card">CARD</span>
-          <span className="logo-zilla">ZILLA</span>
+          <span className="logo-card">THE</span>
+          <span className="logo-zilla">RAIN</span>
         </motion.div>
 
         {/* Navigation Links */}
@@ -55,11 +55,11 @@ const Navbar = () => {
         {/* Action Buttons */}
         <div className="navbar__actions flex items-center gap-6">
           <button className="btn-login">
-            Login
+            Sign In
           </button>
           
           <button className="btn-book">
-            BOOK NOW
+            BOOK RIDE
           </button>
         </div>
 
@@ -83,8 +83,8 @@ const Navbar = () => {
             </li>
           ))}
           <li className="flex flex-col gap-4 w-full px-10">
-            <button className="btn-login-mobile w-full py-4 rounded-xl bg-white/10 text-white font-bold uppercase">Login</button>
-            <button className="btn-book-mobile w-full py-4 rounded-xl bg-red-600 text-white font-bold uppercase">BOOK NOW</button>
+            <button className="btn-login-mobile w-full py-4 rounded-xl bg-white/10 text-white font-bold uppercase">Sign In</button>
+            <button className="btn-book-mobile w-full py-4 rounded-xl bg-red-600 text-white font-bold uppercase">Book Ride</button>
           </li>
         </ul>
       </div>

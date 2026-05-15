@@ -5,6 +5,7 @@ import Stats from './components/Stats';
 import BestDeals from './components/BestDeals';
 import Services from './components/Services';
 import Locations from './components/Locations';
+import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import './App.css';
 
@@ -18,6 +19,7 @@ function App() {
       <BestDeals />
       <Services />
       <Locations />
+      <Testimonials />
       <Footer />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Calendar, Car, Search, ChevronDown } from 'lucide-react';
+import { MapPin, Calendar, Navigation, Search, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './BookingBar.css';
 
@@ -18,9 +18,9 @@ const BookingBar = () => {
               <MapPin size={22} />
             </div>
             <div className="field-content">
-              <label>Pick-up Location</label>
+              <label>Pickup</label>
               <div className="flex items-center gap-1">
-                <input type="text" placeholder="Dubai, UAE" className="bg-transparent border-none outline-none text-white font-bold w-full" />
+                <input type="text" placeholder="Bamenda, Cameroon" className="bg-transparent border-none outline-none text-white font-bold w-full" />
                 <ChevronDown size={14} className="text-white/40" />
               </div>
             </div>
@@ -33,9 +33,9 @@ const BookingBar = () => {
               <Calendar size={22} />
             </div>
             <div className="field-content">
-              <label>Pick-up Date</label>
+              <label>Destination</label>
               <div className="flex items-center gap-1">
-                <input type="text" placeholder="12 May, 2026" className="bg-transparent border-none outline-none text-white font-bold w-full" />
+                <input type="text" placeholder="Commercial Avenue" className="bg-transparent border-none outline-none text-white font-bold w-full" />
                 <ChevronDown size={14} className="text-white/40" />
               </div>
             </div>
@@ -48,9 +48,9 @@ const BookingBar = () => {
               <Calendar size={22} />
             </div>
             <div className="field-content">
-              <label>Return Date</label>
+              <label>Ride Time</label>
               <div className="flex items-center gap-1">
-                <input type="text" placeholder="15 May, 2026" className="bg-transparent border-none outline-none text-white font-bold w-full" />
+                <input type="text" placeholder="Now or Schedule" className="bg-transparent border-none outline-none text-white font-bold w-full" />
                 <ChevronDown size={14} className="text-white/40" />
               </div>
             </div>
@@ -60,15 +60,15 @@ const BookingBar = () => {
 
           <div className="booking-field group">
             <div className="field-icon text-red-500 transition-transform group-hover:scale-110">
-              <Car size={22} />
+              <Navigation size={22} />
             </div>
             <div className="field-content">
-              <label>Car Brand</label>
+              <label>Ride Type</label>
               <div className="flex items-center gap-1">
                 <select className="bg-transparent border-none outline-none text-white font-bold w-full appearance-none cursor-pointer">
-                  <option className="bg-[#111]">Audi</option>
-                  <option className="bg-[#111]">BMW</option>
-                  <option className="bg-[#111]">Mercedes</option>
+                  <option className="bg-[#111]">Standard</option>
+                  <option className="bg-[#111]">Premium</option>
+                  <option className="bg-[#111]">VIP</option>
                 </select>
                 <ChevronDown size={14} className="text-white/40" />
               </div>
@@ -77,7 +77,7 @@ const BookingBar = () => {
 
           <button className="btn-search-premium">
             <Search size={22} />
-            <span className="font-black tracking-widest uppercase text-xs">Find a Car</span>
+            <span className="font-black tracking-widest uppercase text-xs">Book Ride</span>
           </button>
         </div>
       </div>

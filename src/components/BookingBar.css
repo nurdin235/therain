@@ -53,7 +53,7 @@
 }
 
 .btn-search-premium {
-  background: #ef1018;
+  background: linear-gradient(135deg, #0bbcff, #00f0c2);
   color: white;
   display: flex;
   align-items: center;
@@ -62,14 +62,14 @@
   padding: 1.05rem 1.6rem;
   border-radius: 8px;
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 10px 30px rgba(239, 16, 24, 0.3);
+  box-shadow: 0 10px 30px rgba(11, 188, 255, 0.28);
   margin-left: 2rem;
 }
 
 .btn-search-premium:hover {
   transform: translateY(-5px) scale(1.02);
-  background: #ff1a22;
-  box-shadow: 0 20px 40px rgba(239, 16, 24, 0.5);
+  background: linear-gradient(135deg, #54ddff, #36ffd1);
+  box-shadow: 0 20px 40px rgba(11, 188, 255, 0.42);
 }
 
 @media (max-width: 1200px) {

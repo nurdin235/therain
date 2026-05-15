@@ -38,7 +38,7 @@
 }
 
 .logo-card {
-  color: #ef1018;
+  color: #16d7ff;
 }
 
 .logo-zilla {
@@ -78,8 +78,8 @@
 
 .navbar__link:hover,
 .navbar__link--active {
-  color: #ef1018;
-  background: rgba(239, 16, 24, 0.08);
+  color: #16d7ff;
+  background: rgba(22, 215, 255, 0.08);
 }
 
 .navbar__link::after {
@@ -90,8 +90,8 @@
   left: 0.8rem;
   height: 3px;
   border-radius: 999px;
-  background: #ef1018;
-  box-shadow: 0 0 18px rgba(239, 16, 24, 0.9);
+  background: #16d7ff;
+  box-shadow: 0 0 18px rgba(22, 215, 255, 0.9);
   opacity: 0;
   transform: scaleX(0.35);
   transition: opacity 220ms ease, transform 220ms ease;
@@ -127,13 +127,14 @@
   min-height: 2.95rem;
   padding: 0 1.8rem;
   border-radius: 8px;
-  background: #ef1018;
-  box-shadow: 0 14px 30px rgba(239, 16, 24, 0.32);
+  background: linear-gradient(135deg, #0bbcff, #00f0c2);
+  color: #02070c;
+  box-shadow: 0 14px 30px rgba(11, 188, 255, 0.28);
   transition: transform 220ms ease, background 220ms ease;
 }
 
 .btn-book:hover {
-  background: #ff242c;
+  background: linear-gradient(135deg, #54ddff, #36ffd1);
   transform: translateY(-1px);
 }
 
@@ -169,7 +170,7 @@
 }
 
 .navbar__mobile-link--active {
-  color: #ef1018;
+  color: #16d7ff;
 }
 
 @media (max-width: 1024px) {
